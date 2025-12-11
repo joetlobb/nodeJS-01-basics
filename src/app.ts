@@ -29,10 +29,12 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
       const parsedBody = Buffer.concat(body).toString();
       console.log(parsedBody);
       const message: string = parsedBody.split("=")[1] as string;
-      fs.writeFileSync("message.txt", message);
-      res.statusCode = 302;
-      res.setHeader("Location", "/");
-      return res.end();
+      // fs.writeFileSync('message.txt', message); // will block next line execution until this write file is done
+      fs.writeFile("message.txt", message, (error) => {
+        res.statusCode = 302;
+        res.setHeader("Location", "/");
+        return res.end();
+      }); // this one write file asynchronously
     });
   }
 
