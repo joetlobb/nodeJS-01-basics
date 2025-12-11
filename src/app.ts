@@ -1,10 +1,13 @@
 import { createServer, IncomingMessage, ServerResponse } from "http"; // TS
+import * as fs from "fs";
 
 const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   //   console.log(req.url, req.method, req.headers);
-  // process.exit()
+  //   process.exit();
 
   const url = req.url;
+  const method = req.method;
+
   if (url === "/") {
     res.write("<html>");
     res.write("<head><title>Enter message</title></head>");
@@ -12,6 +15,13 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
       '<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form></body>'
     );
     res.write("</html>");
+    return res.end();
+  }
+
+  if (url === "/message" && method === "POST") {
+    fs.writeFileSync("message.txt", "DUMMY");
+    res.statusCode = 302;
+    res.setHeader("Location", "/");
     return res.end();
   }
 
