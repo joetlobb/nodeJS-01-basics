@@ -25,11 +25,14 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
       body.push(chunk);
       console.log(chunk);
     });
-    req.on("end", () => {
+    return req.on("end", () => {
       const parsedBody = Buffer.concat(body).toString();
       console.log(parsedBody);
       const message: string = parsedBody.split("=")[1] as string;
       fs.writeFileSync("message.txt", message);
+      res.statusCode = 302;
+      res.setHeader("Location", "/");
+      return res.end();
     });
   }
 
