@@ -2,3 +2,11 @@ tsc --init
 
 npm i --save-dev @types/node
 
+npm start
+
+// run custom script
+npm run start-server
+
+// install 3rd party dependency + save
+npm install --save-dev nodemon
+npm install -D nodemon ts-node typescript @types/node // for TS
